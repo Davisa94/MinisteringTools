@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
+import vue3GoogleLogin from 'vue3-google-login';
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 axios.interceptors.request.use(function (config) {
@@ -19,10 +20,15 @@ const router = createRouter({
   routes: [
     { path: '/', component: LoginPage },
     { path: '/register', component: RegisterPage },
-  ],
+    { Path: '/login', component: LoginPage }  ],
 });
-  
-createApp(App).use(router).mount('#app');
+
+const app = createApp(App)
+app.use(router)
+app.use(vue3GoogleLogin, {
+  clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
+})
+app.mount('#app');
 
 //createApp(App).mount('#app')
 

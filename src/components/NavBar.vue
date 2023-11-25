@@ -17,7 +17,7 @@
               <a class="nav-link" href="../components/pages/AddReport">Add Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../components/pages/LoginPage">Sing In</a>
+              <a class="nav-link" href="../components/pages/LoginPage">Sign In</a>
             </li>
           </ul>
         </div>
