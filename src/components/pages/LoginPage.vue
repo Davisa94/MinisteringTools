@@ -43,6 +43,10 @@
                                  <p class="text-center">Don't have account? 
                                      <router-link to="/register">Register here </router-link>
                                  </p>
+                                 <!-- <GoogleSignInButton :client-id="clientId" @success="onSuccess" @error="onError"></GoogleSignInButton> -->
+                                 <!-- <button v-google-signin-button="clientId" class="btn btn-danger btn-block">Login with Google</button> -->
+                                 <!-- <router-link to="/login/federated/google">Login with Google</router-link> -->
+                                 <GoogleLogin :callback="googleLoginCallback"/>
                              </div>
                          </form>
                      </div>
@@ -56,6 +60,8 @@
  <script>
  import axios from 'axios';
  import LayoutDiv from '../LayoutDiv.vue';
+ import { decodeCredential } from 'vue3-google-login'
+
    
  export default {
    name: 'LoginPage',
@@ -98,7 +104,23 @@
              }
              return error
            });
-      }
+      },
+      googleLoginCallback(response) {
+        const userData = decodeCredential(response.credential)
+        console.log(userData);
+        var profileImage = userData.picture;
+        console.log(profileImage);
+      },
+      onSignInSuccess(googleUser) {
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Name: ' + profile.getName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        },
+        onSignInFailure(error) {
+          console.log('Error: ' + error);
+        }
    },
  };
  </script>
