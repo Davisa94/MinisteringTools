@@ -1,21 +1,20 @@
 <template>
   <FixedHeader :title="siteTitle"/>
 
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <router-view></router-view>
+  </div>
   <FixedFooter />
 </template>
 
 <script>
 import FixedHeader from './components/Header.vue'
-import HelloWorld from './components/HelloWorld.vue'
 import FixedFooter from './components/Footer.vue'
 
 export default {
   name: 'App',
   components: {
     FixedHeader,
-    HelloWorld,
     FixedFooter
   },
   data() {

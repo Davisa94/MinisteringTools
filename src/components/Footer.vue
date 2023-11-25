@@ -21,7 +21,9 @@
   
   <style scoped>
   footer {
-    background-color: #f5f5f5;
+    background-color: #0A1128;
+    color: #FEFCFB;
+    font-weight: bold;
     padding: 20px;
   }
   </style>
