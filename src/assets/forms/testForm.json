@@ -1,0 +1,23 @@
+{
+    "formTitle": "My Form",
+    "readOnly": true,
+    "apiUrl": "https://api.example.com/formData",
+    "questions": [
+      {
+        "id": "question1",
+        "text": "Question 1",
+        "inputType": "text"
+      },
+      {
+        "id": "question2",
+        "text": "Question 2",
+        "inputType": "checkbox"
+      },
+      {
+        "id": "question3",
+        "text": "Question 3",
+        "inputType": "radio",
+        "options": ["Option 1", "Option 2", "Option 3"]
+      }
+    ]
+  }
