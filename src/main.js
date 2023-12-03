@@ -7,6 +7,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 import MinisteringReporting from './components/pages/MinisteringReporting';
+import MinisteringLookup from './components/pages/MinisteringLookup';
 import vue3GoogleLogin from 'vue3-google-login';
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
@@ -22,7 +23,8 @@ const router = createRouter({
     { path: '/', component: LoginPage },
     { path: '/register', component: RegisterPage },
     { Path: '/login', component: LoginPage },  
-    { Path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting }],
+    { Path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting },
+    { Path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup }],
 });
 
 const app = createApp(App)
