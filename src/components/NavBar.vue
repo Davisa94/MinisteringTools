@@ -11,13 +11,13 @@
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/MinisteringLookup">View Reports</a>
+              <a class="nav-link" href="/MinisteringLookup">View Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../pages/MinisteringReporting">Add Reports</a>
+              <a class="nav-link" href="/MinisteringReporting">Add Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../components/pages/LoginPage">Sign In</a>
+              <a class="nav-link" href="/LoginPage">Sign In</a>
             </li>
           </ul>
         </div>

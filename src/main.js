@@ -8,7 +8,14 @@ import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 import MinisteringReporting from './components/pages/MinisteringReporting';
 import MinisteringLookup from './components/pages/MinisteringLookup';
-import vue3GoogleLogin from 'vue3-google-login';
+// import vue3GoogleLogin from 'vue3-google-login';
+import GAuth from 'vue-google-sheets-oauth2'
+
+const gauthOpt = {
+  clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+  scope: 'https://www.googleapis.com/auth/spreadsheets',
+  prompt: 'select account',
+};
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 axios.interceptors.request.use(function (config) {
@@ -23,15 +30,16 @@ const router = createRouter({
     { path: '/', component: LoginPage },
     { path: '/register', component: RegisterPage },
     { Path: '/login', component: LoginPage },  
-    { Path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting },
-    { Path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup }],
+    { Path: '/reporting', alias:["/components/pages/MinisteringReporting", "/MinisteringReporting"], component: MinisteringReporting },
+    { Path: '/lookup', alias:["/components/pages/MinisteringLookup", "/MinisteringLookup"], component: MinisteringLookup }],
 });
 
 const app = createApp(App)
 app.use(router)
-app.use(vue3GoogleLogin, {
-  clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
-})
+// app.use(vue3GoogleLogin, {
+//   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
+// })
+app.use(GAuth, gauthOpt);
 app.mount('#app');
 
 //createApp(App).mount('#app')

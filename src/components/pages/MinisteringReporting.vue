@@ -39,9 +39,14 @@
   </template>
   
   <script>
+//   import { vueGsheets } from 'vue-gsheets';
+//   import { GoogleSpreadsheet } from 'google-spreadsheet';
+//   import { OAuth2Client } from 'google-auth-library';
+
   export default {
-  data() {
+    data() {
     return {
+      token: '',
       interviewer: '',
       reporter: '',
       Additionalreporter: '',
@@ -71,6 +76,19 @@
   },
   mounted() {
     this.interviewerOptions = ["George", "Harry", "Moe"];
+    // check for the token in local storage
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log('token exists');
+      console.log(token);
+    } else {
+        console.log('token does not exist');
+      // if it doesn't exist, prompt the user to log in
+    }
+    // if it exists, use it
+    // if it doesn't exist, prompt the user to log in
+    // Fetch additional reporter options from API and populate additionalReporterOptions array
+
     // Fetch interviewer options from API and populate interviewerOptions array
     // Fetch reporter options from API and populate reporterOptions array
     // Set timestamp value to current time and date
