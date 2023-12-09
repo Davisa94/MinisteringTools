@@ -24,3 +24,5 @@ pnpm-debug.log*
 *.sw?
 .env
 Jsonforms.txt
+src/assets/ministeringtools-9196cd028ed0.json
+src/assets/creds.json

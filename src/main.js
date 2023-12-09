@@ -8,7 +8,13 @@ import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 import MinisteringReporting from './components/pages/MinisteringReporting';
 import MinisteringLookup from './components/pages/MinisteringLookup';
+// import LoadAPITest from './components/LoadAPITest';
+import SheetsTest from './components/pages/SheetsTest';
 import vue3GoogleLogin from 'vue3-google-login';
+
+// import gAuthPlugin from 'vue3-google-oauth2';
+// import GAuth from 'vue-google-oauth2'
+
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 axios.interceptors.request.use(function (config) {
@@ -24,7 +30,9 @@ const router = createRouter({
     { path: '/register', component: RegisterPage },
     { Path: '/login', component: LoginPage },  
     { Path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting },
-    { Path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup }],
+    { Path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup },
+    { Path: '/APITest', alias:["/components/pages/SheetsTest"], component: SheetsTest },
+    { Path: '/sheetsTest', alias:["/components/pages/SheetsTest"], component: SheetsTest },],
 });
 
 const app = createApp(App)
@@ -32,6 +40,10 @@ app.use(router)
 app.use(vue3GoogleLogin, {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
 })
+// app.use(gAuthPlugin, {
+//   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
+// })
+// app.use(GAuth, {clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID})
 app.mount('#app');
 
 //createApp(App).mount('#app')

@@ -107,6 +107,8 @@
       },
       googleLoginCallback(response) {
         const userData = decodeCredential(response.credential)
+        // store user data in localStorage
+        localStorage.setItem('userData', JSON.stringify(userData));
         console.log(userData);
         var profileImage = userData.picture;
         console.log(profileImage);

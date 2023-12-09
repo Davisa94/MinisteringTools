@@ -19,6 +19,7 @@
             <li class="nav-item">
               <a class="nav-link" href="../components/pages/LoginPage">Sign In</a>
             </li>
+            <LogOut></LogOut>
           </ul>
         </div>
       </div>
@@ -26,6 +27,7 @@
   </template>
   
   <script>
+  import LogOut from './LogOut.vue';
   export default {
     name: 'NavBar',
     props: {
@@ -33,6 +35,9 @@
         type: String,
         required: true
       }
+    },
+    components: {
+      LogOut
     }
   }
   </script>
