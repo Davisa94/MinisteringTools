@@ -12,10 +12,26 @@
   AIL.displayDocInfo(doc);
 
   // get the first sheet and then display its name
-  const sheet = await AIL.getSheetByIndex(doc, 0);
-  console.log(sheet.title);
-  console.log("Sheet ID: " + sheet.sheetId);
-  
+  const email = "aisom960@gmail.com";
+  const responseRows = await AIL.getResponses(doc);
+  console.log(responseRows);
+  console.log("Getting row by email:" + email);
+  const individualResponse = await AIL.getResponsesByEmail(responseRows, email);
+  console.log("Individual Response: ");
+  console.log(individualResponse[0]);
+  const month = 9;
+  const year = 2023;
+  const responses = await AIL.getResponsesByMonthAndYear(responseRows, month, year);
+  console.log(responses);
 
+  const JohnEmail = "lyles.john6@gmail.com";
+  // const BenEmail = "gfbenitez@hotmail.com";
+  const JohnResponses = await AIL.getResponsesByEmailFromDate(responses, JohnEmail);
+  console.log(JohnResponses);
+
+  const filteredNamesRaw = await AIL.getFilteredNames(doc);
+  console.log(filteredNamesRaw);
+  // AIL.processFilteredNames(filteredNamesRaw);
+  AIL.updateMonthYearFilter(doc, month + 1, year);
   
   </script>

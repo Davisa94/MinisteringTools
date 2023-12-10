@@ -1,0 +1,4 @@
+Before each page load -> We check that the user is authenticated -> If not we bring them to the log in page
+If they are authenticated, we check if the email matches on of those listed in the -> If not we de-authenticate them and display an Unauthorized user page with the message, Contact a System administrator for further assistance. 
+approvedUsers.txt file. If they are then we display content.
+If not we bring them to the log in page
