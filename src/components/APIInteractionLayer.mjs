@@ -9,6 +9,8 @@ const filteredSheetID = process.env.VUE_APP_FILTERED_RESPONSES;
 const lookupSheetID = process.env.VUE_APP_LOOKUP_SHEET_ID;
 const ListHelperSheetId = process.env.VUE_APP_DATA_HELPER_LISTS_ID;
 const dateSheetId = process.env.VUE_APP_DATE_HELPER_ID;
+const botSubmitField = process.env.VUE_APP_BOT_SUBMIT_FIELD;
+const botSubmitSheetID = process.env.VUE_APP_BOT_SUBMIT_SHEET_ID;
 const auth = new JWT({
     email: creds.client_email,
     key: creds.private_key,
@@ -169,6 +171,29 @@ const auth = new JWT({
         return email;
     }
 
+    export async function getFormQuestions(doc){
+        const sheet = doc.sheetsById[filteredSheetID];
+        const questionsStartA1 = "C1";
+        const questionsEndA1 = "I1";
+        const numColumns = 9;
+
+        const questions = [];
+        await sheet.loadCells(`${questionsStartA1}:${questionsEndA1}`);
+        //loop through every row, and get the cell at that row for the j column:
+        for (let i = 2; i < numColumns; i++){
+            console.log(sheet.getCell(0, i).value);
+            if(sheet.getCell(0, i).value == null){
+                break
+            }
+            questions.push(sheet.getCell(0, i).value)
+        }
+        // get the first row of the sheet using  load cells:
+        console.log("Fetching questions from " + `${questionsStartA1}:${questionsEndA1}`); 
+        // const firstRow = sheet.getRows()[0];
+        console.log(questions);
+        return questions;
+    }
+
     /* get all responses whose timestamp matches a given month and year
        we assume that the timestamp is in the format "MM-DD-YYYY HH:MM:SS", and is accesed as
        responses[i]._rawData[0]
@@ -195,4 +220,15 @@ const auth = new JWT({
         const responses = doc.sheetsByIndex[0].getRows();
         console.log(responses);
         return responses
+    }
+
+    export async function submitResponses(doc){
+        // Submits responses already entered into the sheet, this only submits, does not enter the responses
+        //set botSubmitField to SUBMIT for the botSubmitSheet
+        const botSheet = doc.sheetsById[botSubmitSheetID];//getSheetById(doc, botSubmitSheetID);
+        console.log(botSubmitField);
+        await botSheet.loadCells(`${botSubmitField}:${botSubmitField}`);
+        botSheet.getCellByA1(botSubmitField).value = "SUBMIT";
+        await botSheet.saveUpdatedCells();
+
     }

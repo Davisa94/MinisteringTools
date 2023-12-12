@@ -1,0 +1,19 @@
+Stay on track use this to keep track of your tasks
+<!-- List of checkboxes -->
+- [x] MinisteringLookup
+  - [x] Load questions Dynamically
+    - [x] get the first row of the filtered Responses sheet
+  - [x] Load Responses Dynamically
+    - [x] Populate the lookup form in the spreadsheet with the date-timestamp selected once it is selected
+    - [x] Then pull the responses from the spreadsheet
+- [ ] MinisteringReporting
+  - [x] Load questions Dynamically
+    - [x] get the first row of the filtered Responses sheet
+  - [ ] Submit the responses
+    - [ ] Push responses to spreadsheet
+    - [x] Setup submitting by sending an update to a single cell
+    - [X] watch that cell on a specific sheet for a specific SUBMIT value and run submit logic on the spreadsheet.
+- [ ] Login and Authentication:
+  - [ ] Before loading every page load an authentication check.
+  - [ ] If it fails we need to remove the token and redirect to the login page
+  - [ ] If it passes we can load the page

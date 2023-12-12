@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
           <label for="responseSelection">Response Selection</label>
-          <select id="responseSelection" v-model="responseSelection" class="form-control">
+          <select id="responseSelection" v-model="responseSelection" class="form-control" v-on:blur="populateResponses">
             <option :key="option" v-for="option in responseSelectionOptions" :value="option">{{ option }}</option>
           </select>
         </div>
@@ -30,7 +30,7 @@
           <input type="text" readonly :value="email" class="form-control" />
         </div>
         <div class="form-group">
-          <label>Responses for {{ responseSelection }}</label>
+          <label>Responses for {{ chosenResponseDateStamp }}</label>
         </div>
         <div v-for="(question, index) in questions" :key="index" class="form-group">
           <label>{{ question.label }}</label>
@@ -45,13 +45,16 @@
   export default {
     data() {
       return {
+        doc:{},
         month: '',
         year: '',
         reporter: '',
         responseSelection: '',
+        chosenResponseDateStamp: 'Unselected',
+        responsesSet:[],
         email: '',
         questions: [
-          { label: 'Question 1', placeholder: 'Question #1' },
+          { label: 'Question 1', placeholder: 'Response #1' },
           { label: 'Question 2', placeholder: 'Question #2' },
           { label: 'Question 3', placeholder: 'Question #3' },
           { label: 'Question 4', placeholder: 'Question #4' },
@@ -64,6 +67,31 @@
       };
     },
     methods: {
+      async populateResponses() {
+        //set the responses for label:
+        this.chosenResponseDateStamp = this.responsesSet[this.responseSelection - 1][0];
+        console.log("Populating responses");
+        // just like populateQuestions but we are filling in the placeholder, and we skip the first two indices of responses
+        const responses = this.responsesSet[this.responseSelection - 1];
+        for (let i = 0; i < this.questions.length; i++) {
+          this.questions[i].placeholder = responses[i+2];
+        }
+      },
+
+      async populateQuestions() {
+        console.log("Populating questions");
+        console.log(this.doc);
+        const quests = await AIL.getFormQuestions(this.doc);
+        // for each quest. in quests set the label of this.questions at the index of quest 
+        if (quests.length > this.questions.length) {
+          for (let i = this.questions.length; i < quests.length; i++) {
+          this.questions.push({ label: '', placeholder: '' });
+        }
+        }
+        for (let i = 0; i < quests.length; i++) {
+          this.questions[i].label = quests[i];
+        }
+      },
       submitForm() {
         // Perform form submission logic here
       },
@@ -89,7 +117,8 @@
         const individualResponses = await AIL.getResponsesByEmailFromDate(responseRows, email);
         //get just the responses
         // this.responseSelectionOptions
-        console.log(individualResponses);
+        console.log("Individual Responses",individualResponses);
+        this.responsesSet = individualResponses;
 
         //populate responseSelectionOptions
         //loop through the individualResponses and get just the first index of each response
@@ -101,13 +130,22 @@
       }
     },
     async mounted() {
-      const doc = await AIL.getDoc();
+      this.doc = await AIL.getDoc();
+      console.log("Fetching doc for first time for Lookup")
+      // this.doc = doc;
+            // DEBUG
+      // Test submitting
+      // AIL.submitResponses(doc);
+      // DEBUG END
 
-      AIL.displayDocInfo(doc);
+      // AIL.displayDocInfo(this.doc);
+      this.populateQuestions();
+
+
 
       // Fetch month options from API and populate monthOptions array
-      this.monthOptions = await AIL.getMonthList(doc);
-      this.yearOptions = await AIL.getYearList(doc);
+      this.monthOptions = await AIL.getMonthList(this.doc);
+      this.yearOptions = await AIL.getYearList(this.doc);
       // Fetch year options from API and populate yearOptions array
       // Fetch reporter options from API and populate reporterOptions array
       // Fetch response selection options from API and populate responseSelectionOptions array
