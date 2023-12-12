@@ -8,17 +8,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../pages/MinisteringLookup">View Reports</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../pages/MinisteringReporting">Add Reports</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../components/pages/LoginPage">Sign In</a>
-            </li>
+            <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/lookup">View Reports</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/reporting">Add Reports</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/login">Sign In</router-link>
+          </li>
             <LogOut></LogOut>
           </ul>
         </div>

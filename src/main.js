@@ -28,11 +28,11 @@ const router = createRouter({
   routes: [
     { path: '/', component: LoginPage },
     { path: '/register', component: RegisterPage },
-    { Path: '/login', component: LoginPage },  
-    { Path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting },
-    { Path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup },
-    { Path: '/APITest', alias:["/components/pages/SheetsTest"], component: SheetsTest },
-    { Path: '/sheetsTest', alias:["/components/pages/SheetsTest"], component: SheetsTest },],
+    { path: '/login', component: LoginPage },  
+    { path: '/reporting', alias:["/components/pages/MinisteringReporting"], component: MinisteringReporting },
+    { path: '/lookup', alias:["/components/pages/MinisteringLookup"], component: MinisteringLookup },
+    { path: '/APITest', alias:["/components/pages/SheetsTest"], component: SheetsTest },
+    { path: '/sheetsTest', alias:["/components/pages/SheetsTest"], component: SheetsTest },],
 });
 
 const app = createApp(App)

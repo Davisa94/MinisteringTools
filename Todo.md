@@ -17,3 +17,5 @@ Stay on track use this to keep track of your tasks
   - [ ] Before loading every page load an authentication check.
   - [ ] If it fails we need to remove the token and redirect to the login page
   - [ ] If it passes we can load the page
+  - [ ] Fix logging out
+- [x] Fix nav bar not routing properly
