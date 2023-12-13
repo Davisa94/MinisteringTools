@@ -3,27 +3,13 @@
       <form @submit="submitForm">
         <div class="form-group">
           <label for="interviewer">Name of interviewer</label>
-          <select id="interviewer" v-model="interviewer" class="form-control">
+          <select id="interviewer" v-model="interviewer" class="form-control" required>
             <option :key="option" v-for="option in interviewerOptions" :value="option">{{ option }}</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="reporter">Name of Reporter</label>
-          <select id="reporter" v-model="reporter" class="form-control">
-            <option :key="option" v-for="option in reporterOptions" :value="option">{{ option }}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="reporter">Additional Reporter</label>
-          <select id="reporter" v-model="Additionalreporter" class="form-control">
-            <option :key="option" v-for="option in reporterOptions" :value="option">{{ option }}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="reporter">Additional Reporter</label>
-          <select id="reporter" v-model="Additionalreporter2" class="form-control">
-            <option :key="option" v-for="option in reporterOptions" :value="option">{{ option }}</option>
-          </select>
+          <label for="reporters">Select all Reporters</label>
+          <v-select id="reporters" :items="reporterOptions" v-model="reporters" multiple></v-select>
         </div>
         <div class="form-group">
           <label>Timestamp</label>
@@ -33,8 +19,22 @@
           <label>{{ question.label }}</label>
           <textarea v-model="question.answer" class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary mt-3 w-100 p-2">Save Responses</button>
+        <button type="button" class="btn btn-primary mt-3 w-100 p-2" :disabled="submitting" v-on:click="submitAllResponses">{{ submitBtnText }}</button>
       </form>
+      <v-overlay
+      :model-value="submitting"
+      :close-on-content-click="false"
+      :close-on-backdrop-click="false"
+      :close-on-back="false"
+      :persistent="true"
+      class="align-center justify-center">
+      <v-progress-circular
+        color="primary"
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
+
     </div>
   </template>
   
@@ -45,11 +45,11 @@
     return {
       doc: {},
       interviewer: '',
-      reporter: '',
-      Additionalreporter: '',
-      Additionalreporter2: '',
-      additionalReporters: [],
+      fullPage: true,
+      reporters: [],
       timestamp: new Date().toLocaleString().slice(0, 17),
+      submitting: false,
+      submitBtnText: 'Submit Responses',
       questions: [
         { label: 'Question 1', answer: '' },
         { label: 'Question 2', answer: '' },
@@ -62,11 +62,6 @@
     };
   },
   methods: {
-    addAdditionalReporter() {
-      if (this.reporter) {
-        this.additionalReporters.push('');
-      }
-    },
     submitForm() {
       // Perform form submission logic here
     },
@@ -88,7 +83,6 @@
         formattedResponses.push(this.questions[i].answer);
       }
       // add the interviewer to the array
-      formattedResponses.push(this.interviewer);
       return formattedResponses;
     },
     async populateQuestions() {
@@ -98,7 +92,7 @@
         // for each quest. in quests set the label of this.questions at the index of quest 
         if (quests.length > this.questions.length) {
           for (let i = this.questions.length; i < quests.length - 1; i++) {
-          this.questions.push({ label: '', placeholder: '' });
+          this.questions.push({ label: '', answer: '' });
         }
         }
         for (let i = 0; i < quests.length - 1; i++) {
@@ -107,17 +101,45 @@
       },
       async submitAllResponses() {
         //format the responses
+        console.log("submitting all responses");
         const formattedResponses = await this.formatResponses();
         console.log(formattedResponses);
+        this.displaySubmitting();
         //for each additional reporter call submitResponse with that additional reporter
-        for (let i = 0; i < this.additionalReporters.length; i++) {
-          
+        for (let i = 0; i < this.reporters.length; i++) {
+          console.log("calling submitResponse with " + this.reporters[i]);
+          await this.submitResponse(formattedResponses, this.reporters[i], this.interviewer);
+          await AIL.submitResponses(this.doc);
+          await this.wait(30);
         }
+        this.displayDone();
+        this.$router.go(0);
       },
     async submitResponse(responses, reporterName, interviewerName) {
       //Submit a single response
       const response = await AIL.fillResponses(this.doc, responses, reporterName, interviewerName);
       console.log(response);
+    },
+      async wait(seconds) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, seconds * 1000);
+      });
+    },
+    displaySubmitting(){
+      // disable the submit button
+      this.submitting = true;
+      this.submitBtnText = 'Submitting Responses...';
+      // show a spinner
+
+      // Say this can take up to two minutes, don't close the browser
+
+    },
+    displayDone(){
+      // enable the submit button
+      this.submitting = false;
+      this.submitBtnText = 'Submit Responses';
     }
   },
   async mounted() {
@@ -131,3 +153,5 @@
   }
 };
   </script>
+  <style>
+  </style>

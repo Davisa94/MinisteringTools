@@ -11,6 +11,15 @@ import MinisteringLookup from './components/pages/MinisteringLookup';
 // import LoadAPITest from './components/LoadAPITest';
 import SheetsTest from './components/pages/SheetsTest';
 import vue3GoogleLogin from 'vue3-google-login';
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
 
 // import gAuthPlugin from 'vue3-google-oauth2';
 // import GAuth from 'vue-google-oauth2'
@@ -36,6 +45,7 @@ const router = createRouter({
 });
 
 const app = createApp(App)
+app.use(vuetify)
 app.use(router)
 app.use(vue3GoogleLogin, {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID

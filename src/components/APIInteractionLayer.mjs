@@ -12,6 +12,7 @@ const dateSheetId = process.env.VUE_APP_DATE_HELPER_ID;
 const botSubmitField = process.env.VUE_APP_BOT_SUBMIT_FIELD;
 const botSubmitSheetID = process.env.VUE_APP_BOT_SUBMIT_SHEET_ID;
 const presidencyListRange = process.env.VUE_APP_PRES_LIST_RANGE;
+const namesListRange = process.env.VUE_APP_NAME_LIST_RANGE;
 const reportingInterviewerRange = process.env.VUE_APP_INTERVIEWER_RANGE;
 const reportingReporterRange = process.env.VUE_APP_REPORTER_RANGE;
 const reportingFirstResponseRange = process.env.VUE_APP_FIRST_RESPONSE_RANGE;
@@ -189,7 +190,7 @@ const auth = new JWT({
         // first we get the data helper sheet:
         const sheet = await doc.sheetsById[ListHelperSheetId];
         // load the cells in the range presidency
-        await sheet.loadCells(presidencyListRange);
+        await sheet.loadCells(namesListRange);
         //for every cell in the column, if the value is not blank add it to the list
         for (let i = 0; i < numRows; i++) {
             const cell = sheet.getCell(i, 2);
@@ -283,13 +284,22 @@ const auth = new JWT({
 
     export async function fillResponses(doc, responses, reporterName, interviewerName){
         const botSheet = doc.sheetsById[botSubmitSheetID];
-        
+        // load cells for column E6:E10 then columns C10:C80
+        // load cells for column E6:E10
+        await botSheet.loadCells('E6:E10');
+
+        // load cells for columns C10:C80
+        await botSheet.loadCells('C10:C80');
 
         //for each response, fill in the corresponding cell in the reportingResponses array of a1 notation cells
         for (let i = 0; i < responses.length; i++){
+            console.log(reportingResponses[i]);
             const cell = botSheet.getCellByA1(reportingResponses[i]);
             cell.value = responses[i];
         }
-        //set botSubmitField to SUBMIT for the botSubmitSheet
+
+        //set the interviewer and reporter names
+        botSheet.getCellByA1(reportingInterviewerRange).value = interviewerName;
+        botSheet.getCellByA1(reportingReporterRange).value = reporterName;
         await botSheet.saveUpdatedCells();
     }
