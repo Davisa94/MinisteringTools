@@ -39,9 +39,11 @@
   </template>
   
   <script>
+    import * as AIL from '../APIInteractionLayer.mjs';
   export default {
   data() {
     return {
+      doc: {},
       interviewer: '',
       reporter: '',
       Additionalreporter: '',
@@ -55,8 +57,8 @@
         { label: 'Question 4', answer: '' },
         { label: 'Question 5', answer: '' }
       ],
-      interviewerOptions: ["Steve", "John", "Michael"],
-      reporterOptions: ["George", "Harry", "Moe"]
+      interviewerOptions: [],
+      reporterOptions: []
     };
   },
   methods: {
@@ -67,13 +69,65 @@
     },
     submitForm() {
       // Perform form submission logic here
+    },
+    async getInterviewerList() {
+      const response = await AIL.getPresidencyList(this.doc);
+      console.log(response);
+      this.interviewerOptions = response;
+    },
+    async getReporterList() {
+      const response = await AIL.getIntervieweeList(this.doc);
+      console.log(response);
+      this.reporterOptions = response;
+    },
+    async formatResponses() {
+      const formattedResponses = [];
+      // Format the responses into the array in the proper order
+      // for each question in questions array we put the answer into the formatted responses array
+      for (let i = 0; i < this.questions.length; i++) {
+        formattedResponses.push(this.questions[i].answer);
+      }
+      // add the interviewer to the array
+      formattedResponses.push(this.interviewer);
+      return formattedResponses;
+    },
+    async populateQuestions() {
+        console.log("Populating questions");
+        console.log(this.doc);
+        const quests = await AIL.getFormQuestions(this.doc);
+        // for each quest. in quests set the label of this.questions at the index of quest 
+        if (quests.length > this.questions.length) {
+          for (let i = this.questions.length; i < quests.length - 1; i++) {
+          this.questions.push({ label: '', placeholder: '' });
+        }
+        }
+        for (let i = 0; i < quests.length - 1; i++) {
+          this.questions[i].label = quests[i];
+        }
+      },
+      async submitAllResponses() {
+        //format the responses
+        const formattedResponses = await this.formatResponses();
+        console.log(formattedResponses);
+        //for each additional reporter call submitResponse with that additional reporter
+        for (let i = 0; i < this.additionalReporters.length; i++) {
+          
+        }
+      },
+    async submitResponse(responses, reporterName, interviewerName) {
+      //Submit a single response
+      const response = await AIL.fillResponses(this.doc, responses, reporterName, interviewerName);
+      console.log(response);
     }
   },
-  mounted() {
-    this.interviewerOptions = ["George", "Harry", "Moe"];
+  async mounted() {
     // Fetch interviewer options from API and populate interviewerOptions array
     // Fetch reporter options from API and populate reporterOptions array
     // Set timestamp value to current time and date
+    this.doc = await AIL.getDoc();
+    this.populateQuestions();
+    this.getInterviewerList();
+    this.getReporterList();
   }
 };
   </script>

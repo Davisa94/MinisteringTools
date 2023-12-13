@@ -9,19 +9,19 @@
         </div>
         <div class="form-group">
           <label for="year">Year</label>
-          <select id="year" v-model="year" class="form-control" v-on:blur="updateFilters">
+          <select id="year" v-model="year" class="form-control" v-on:blur="updateFilters" v-on:change="updateFilters">
             <option :key="option" v-for="option in yearOptions" :value="option">{{ option }}</option>
           </select>
         </div>
         <div class="form-group">
           <label for="reporter">Name of Reporter</label>
-          <select id="reporter" v-model="reporter" class="form-control" v-on:blur="getResponses">
+          <select id="reporter" v-model="reporter" class="form-control" v-on:blur="getResponses" v-on:change="getResponses">
             <option :key="option" v-for="option in reporterOptions" :value="option">{{ option }}</option>
           </select>
         </div>
         <div class="form-group">
           <label for="responseSelection">Response Selection</label>
-          <select id="responseSelection" v-model="responseSelection" class="form-control" v-on:blur="populateResponses">
+          <select id="responseSelection" v-model="responseSelection" class="form-control" v-on:blur="populateResponses" v-on:change="populateResponses">
             <option :key="option" v-for="option in responseSelectionOptions" :value="option">{{ option }}</option>
           </select>
         </div>
@@ -68,6 +68,10 @@
     },
     methods: {
       async populateResponses() {
+        console.log("responseSelection:" + this.responseSelection);
+        if(this.responseSelection === '' || this.responseSelection === 0){
+          return
+        }
         //set the responses for label:
         this.chosenResponseDateStamp = this.responsesSet[this.responseSelection - 1][0];
         console.log("Populating responses");

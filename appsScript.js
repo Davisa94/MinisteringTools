@@ -7,6 +7,7 @@ const SECOND_RESPONSE_RANGE = 'C21';
 const THIRD_RESPONSE_RANGE = 'C30';
 const FOURTH_RESPONSE_RANGE = 'C40';
 const FIFTH_RESPONSE_RANGE = 'C50';
+const SIXTH_RESPONSE_RANGE = 'C60';
 const SUBMIT_RESPONSE_RANGE = 'H62';
 
 // form response sheet name

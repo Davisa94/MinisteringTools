@@ -11,6 +11,17 @@ const ListHelperSheetId = process.env.VUE_APP_DATA_HELPER_LISTS_ID;
 const dateSheetId = process.env.VUE_APP_DATE_HELPER_ID;
 const botSubmitField = process.env.VUE_APP_BOT_SUBMIT_FIELD;
 const botSubmitSheetID = process.env.VUE_APP_BOT_SUBMIT_SHEET_ID;
+const presidencyListRange = process.env.VUE_APP_PRES_LIST_RANGE;
+const reportingInterviewerRange = process.env.VUE_APP_INTERVIEWER_RANGE;
+const reportingReporterRange = process.env.VUE_APP_REPORTER_RANGE;
+const reportingFirstResponseRange = process.env.VUE_APP_FIRST_RESPONSE_RANGE;
+const reportingSecondResponseRange = process.env.VUE_APP_SECOND_RESPONSE_RANGE;
+const reportingThirdResponseRange = process.env.VUE_APP_THIRD_RESPONSE_RANGE;
+const reportingFourthResponseRange = process.env.VUE_APP_FOURTH_RESPONSE_RANGE;
+const reportingFifthResponseRange = process.env.VUE_APP_FIFTH_RESPONSE_RANGE;
+const reportingSixthResponseRange = process.env.VUE_APP_SIXTH_RESPONSE_RANGE;
+const reportingResponses = [reportingFirstResponseRange, reportingSecondResponseRange, reportingThirdResponseRange, reportingFourthResponseRange, reportingFifthResponseRange, reportingSixthResponseRange];
+
 const auth = new JWT({
     email: creds.client_email,
     key: creds.private_key,
@@ -154,6 +165,43 @@ const auth = new JWT({
         return temp
     }
 
+    export async function getPresidencyList(doc){
+        const presList = [];
+        const numRows = 25;
+        // first we get the data helper sheet:
+        const sheet = await doc.sheetsById[ListHelperSheetId];
+        // load the cells in the range presidency
+        await sheet.loadCells(presidencyListRange);
+        //for every cell in the column, if the value is not blank add it to the list
+        for (let i = 1; i < numRows; i++) {
+            const cell = sheet.getCell(i, 4);
+            const value = cell.value;
+            if (value !== null && value !== "") {
+                presList.push(value);
+            }
+        }
+        return presList
+
+    }
+    export async function getIntervieweeList(doc){
+        const names = [];
+        const numRows = 1000;
+        // first we get the data helper sheet:
+        const sheet = await doc.sheetsById[ListHelperSheetId];
+        // load the cells in the range presidency
+        await sheet.loadCells(presidencyListRange);
+        //for every cell in the column, if the value is not blank add it to the list
+        for (let i = 0; i < numRows; i++) {
+            const cell = sheet.getCell(i, 2);
+            const value = cell.value;
+            if (value !== null && value !== "") {
+                names.push(value);
+            }
+        }
+        return names
+
+    }
+
     export async function getEmailFromName(doc, name){
         const sheet = doc.sheetsById[lookupSheetID];
         const NameCellA1 = "E9";
@@ -231,4 +279,17 @@ const auth = new JWT({
         botSheet.getCellByA1(botSubmitField).value = "SUBMIT";
         await botSheet.saveUpdatedCells();
 
+    }
+
+    export async function fillResponses(doc, responses, reporterName, interviewerName){
+        const botSheet = doc.sheetsById[botSubmitSheetID];
+        
+
+        //for each response, fill in the corresponding cell in the reportingResponses array of a1 notation cells
+        for (let i = 0; i < responses.length; i++){
+            const cell = botSheet.getCellByA1(reportingResponses[i]);
+            cell.value = responses[i];
+        }
+        //set botSubmitField to SUBMIT for the botSubmitSheet
+        await botSheet.saveUpdatedCells();
     }
