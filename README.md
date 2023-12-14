@@ -1,3 +1,7 @@
+Ministering Tools. 
+A tool for allowing RS, EQ, and Bishopric to manage ministering reports.
+A frontend wrapper for the spreadsheet tool.
+
 # vue3-bootstrap5
 
 ## Project setup
