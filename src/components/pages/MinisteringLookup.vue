@@ -127,6 +127,8 @@
         //populate responseSelectionOptions
         //loop through the individualResponses and get just the first index of each response
         // add that to responseSelectionOptions
+        // clear response optiopns before populating them:
+        this.responseSelectionOptions = [];
         for (let i = 0; i < individualResponses.length; i++){
           this.responseSelectionOptions.push(i+1);
         }

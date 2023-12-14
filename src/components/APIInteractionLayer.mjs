@@ -138,7 +138,14 @@ const auth = new JWT({
             if(sheet.getCell(i, 9).value == null){
                 break
             }
-            names.push(sheet.getCell(i, 9).value)
+            //Ensure that value doesn't already exist in the list
+            if(names.includes(sheet.getCell(i, 9).value)){
+                continue
+            }
+            else
+            {
+                names.push(sheet.getCell(i, 9).value)
+            }
         }
         
         return names
